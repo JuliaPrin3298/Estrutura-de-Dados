@@ -1,0 +1,29 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"version": "2.0.0",
+			"tasks": [
+				{
+					"type": "cppbuild",
+					"label": "Compilar C++",
+					"command": "C:\\Users\\julia\\OneDrive\\Documentos\\Estrutura de daddos\\MinGW\\bin\\g++.exe",
+					"args": [
+						"-fdiagnostics-color=always",
+						"-g",
+						"${file}",
+						"-o",
+						"${fileDirname}\\output\\${fileBasenameNoExtension}.exe"
+					],
+					"options": {
+						"cwd": "C:\\Users\\julia\\OneDrive\\Documentos\\Estrutura de daddos\\MinGW\\bin"
+					},
+					"problemMatcher": ["$gcc"],
+					"group": "build",
+					"detail": "Compilador: MinGW g++"
+				}
+			]
+		}
+		
+	]
+}
