@@ -1,3 +1,8 @@
+/*
+Julia Rocha Nogueira
+Maiara Macedo Ribeiro de Sousa
+*/
+
 #include <stdio.h>
 #include <locale.h>
 
