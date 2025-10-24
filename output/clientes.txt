@@ -1,0 +1,8 @@
+CPF: 1234
+Nome: lia
+Telefone: 12
+
+CPF: 0987
+Nome: poli
+Telefone: 1345
+
