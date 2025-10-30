@@ -113,7 +113,7 @@ int main()
 
     setlocale(LC_ALL, "Portuguese");
 
-    int a[TAM];
+    int a[TAM], b[TAM];
 
     //valors repetidos
     printf("Insira qualquer valor no vetor eles podem se repetir\n");
@@ -127,4 +127,18 @@ int main()
     mostrarVetor(a, TAM);
     decrescente(a, TAM);
     crescente(a, TAM);
+
+    //Vetor B
+
+    printf("\nInsira qualquer valor no vetor eles podem se repetir\n");
+    inserirValor(b, TAM);
+
+    printf("\nVetor B\n");
+    inserirVNR(b, TAM);
+
+    printf("\nValores no vetor B:\n ");
+    mostrarVetor(b, TAM);
+    decrescente(b, TAM);
+    crescente(b, TAM);
+
 }
