@@ -8,18 +8,20 @@ Maiara Macedo Ribeiro de Sousa
 #define TAM 10
 
 //valor repetido
-int inserirValor(int a[], int i,int tamanho){
-
+int inserirValor(int a[],int tamanho){
+    int i;
     for (i = 0; i < tamanho; i++)
     {
-            printf("Insira o %d° valor: ", i + 1);
+            printf("\nInsira o %d° valor: ", i + 1);
             scanf("%d", &a[i]);
     }
 }
 
 
 //valor não repetido
-int inserirVNR(int a[], int i, int j, int repetido, int tamanho){
+int inserirVNR(int a[], int tamanho){
+
+    int i, j, repetido;
 
     for (i = 0; i < tamanho; i++)
     {
@@ -27,7 +29,7 @@ int inserirVNR(int a[], int i, int j, int repetido, int tamanho){
         {
             repetido = 0;
 
-            printf("Insira o %d° valor: ", i + 1);
+            printf("\nInsira o %d° valor: ", i + 1);
             scanf("%d", &a[i]);
 
             for (j = 0; j < i; j++)
@@ -35,7 +37,7 @@ int inserirVNR(int a[], int i, int j, int repetido, int tamanho){
                 if (a[i] == a[j])
                 {
                     repetido = 1;
-                    printf("Coloque um valor diferente! Não repita valores.\n");
+                    printf("\nColoque um valor diferente! Não repita valores.\n");
                     break;
                 }
             }
@@ -44,7 +46,9 @@ int inserirVNR(int a[], int i, int j, int repetido, int tamanho){
 
 }
 
-void mostrarVetor(int a[], int i, int tamanho){
+void mostrarVetor(int a[], int tamanho){
+
+    int i;
 
      for (i = 0; i < tamanho; i++)
     {
@@ -55,7 +59,9 @@ void mostrarVetor(int a[], int i, int tamanho){
 }
 
 
-int decrescente(int a[], int j, int temp, int i, int tamanho){
+int decrescente(int a[], int tamanho){
+
+    int i, j, temp;
 
      for (j = 0; j < tamanho - 1; j++)
     {
@@ -70,7 +76,7 @@ int decrescente(int a[], int j, int temp, int i, int tamanho){
         }
     }
 
-    printf("Em ordem decrescente: ");
+    printf("\n Em ordem decrescente: ");
     for (i = 0; i < tamanho; i++)
     {
         printf("\n %d ", a[i]);
@@ -78,7 +84,9 @@ int decrescente(int a[], int j, int temp, int i, int tamanho){
 
 }
 
-int crescente(int a[], int j, int temp, int i, int tamanho){
+int crescente(int a[], int tamanho){
+
+    int i, j, temp;
 
     for (j = 0; j < tamanho - 1; j++)
     {
@@ -106,18 +114,16 @@ int main()
     setlocale(LC_ALL, "Portuguese");
 
     int a[TAM];
-    int i, j, repetido;
-    int temp;
 
     //valors repetidos
-    printf("Insira qualquer valor no vetor eles podem se repetir");
+    printf("Insira qualquer valor no vetor eles podem se repetir\n");
     inserirValor(a, TAM);
 
     //valores não repetidos
-    printf("Vetor A\n");
+    printf("\nVetor A\n");
     inserirVNR(a, TAM);
 
-    printf("\nValores no vetor A: ");
+    printf("\nValores no vetor A:\n ");
     mostrarVetor(a, TAM);
     decrescente(a, TAM);
     crescente(a, TAM);
