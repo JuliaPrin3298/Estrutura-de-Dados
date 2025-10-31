@@ -13,43 +13,43 @@ void formsCadastroCli(char cpf[], char nome[], char telefone[]) {
     scanf("%14s", telefone);
 }
 
-void cadastroCli(FILE *arquivo) {
+void cadastroCli(FILE *arquivocli) {
     char cpf[15], nome[50], telefone[15];
     formsCadastroCli(cpf, nome, telefone);
 
-    fprintf(arquivo, "CPF: %s\nNome: %s\nTelefone: %s\n\n", cpf, nome, telefone);
+    fprintf(arquivocli, "CPF: %s\nNome: %s\nTelefone: %s\n\n", cpf, nome, telefone);
     printf("\nDados cadastrados com sucesso!\n");
 }
 
-void mostrarCliente(FILE *arquivo) {
+void mostrarCliente(FILE *arquivocli) {
     char linha[100];
     printf("\n=== Clientes Cadastrados ===\n");
 
-    fclose(arquivo);
-    arquivo = fopen("clientes.txt", "r");
+    fclose(arquivocli);
+    arquivocli = fopen("clientes.txt", "r");
 
-    if (arquivo == NULL) {
+    if (arquivocli == NULL) {
         printf("Erro ao abrir arquivo para leitura.\n");
         return;
     }
 
-    while (fgets(linha, 100, arquivo)) {
+    while (fgets(linha, 100, arquivocli)) {
         printf("%s", linha);
     }
 
-    fclose(arquivo);
+    fclose(arquivocli);
     printf("\n============================\n");
 }
 
 void atualizarCliente() {
-    FILE *arquivo, *temp; // <--- remove duplicação de "FILE *arquivo"
+    FILE *arquivocli, *temp; // <--- remove duplicação de "FILE *arquivocli"
     char cpfBusca[15], cpf[15], nome[50], telefone[15];
     int encontrado = 0;
 
-    arquivo = fopen("clientes.txt", "r");
+    arquivocli = fopen("clientes.txt", "r");
     temp = fopen("temp.txt", "w");
 
-    if (arquivo == NULL || temp == NULL) {
+    if (arquivocli == NULL || temp == NULL) {
         printf("Erro ao abrir os arquivos.\n");
         return;
     }
@@ -57,7 +57,7 @@ void atualizarCliente() {
     printf("\nDigite o CPF do cliente que deseja atualizar: ");
     scanf("%14s", cpfBusca);
 
-    while (fscanf(arquivo, "CPF: %14s\nNome: %49s\nTelefone: %14s\n\n", cpf, nome, telefone) == 3) {
+    while (fscanf(arquivocli, "CPF: %14s\nNome: %49s\nTelefone: %14s\n\n", cpf, nome, telefone) == 3) {
         if (strcmp(cpf, cpfBusca) == 0) {
             encontrado = 1;
             printf("\nCliente encontrado!\n");
@@ -69,7 +69,7 @@ void atualizarCliente() {
         fprintf(temp, "CPF: %s\nNome: %s\nTelefone: %s\n\n", cpf, nome, telefone);
     }
 
-    fclose(arquivo);
+    fclose(arquivocli);
     fclose(temp);
 
     remove("clientes.txt");
@@ -82,14 +82,14 @@ void atualizarCliente() {
 }
 
 void excluirCliente() {
-    FILE *arquivo, *temp; // <--- remove duplicação
+    FILE *arquivocli, *temp; // <--- remove duplicação
     char cpfBusca[15], cpf[15], nome[50], telefone[15];
     int encontrado = 0;
 
-    arquivo = fopen("clientes.txt", "r");
+    arquivocli = fopen("clientes.txt", "r");
     temp = fopen("temp.txt", "w");
 
-    if (arquivo == NULL || temp == NULL) {
+    if (arquivocli == NULL || temp == NULL) {
         printf("Erro ao abrir os arquivos.\n");
         return;
     }
@@ -97,7 +97,7 @@ void excluirCliente() {
     printf("\nDigite o CPF do cliente que deseja excluir: ");
     scanf("%14s", cpfBusca);
 
-    while (fscanf(arquivo, "CPF: %14s\nNome: %49s\nTelefone: %14s\n\n", cpf, nome, telefone) == 3) {
+    while (fscanf(arquivocli, "CPF: %14s\nNome: %49s\nTelefone: %14s\n\n", cpf, nome, telefone) == 3) {
         if (strcmp(cpf, cpfBusca) != 0) {
             fprintf(temp, "CPF: %s\nNome: %s\nTelefone: %s\n\n", cpf, nome, telefone);
         } else {
@@ -105,7 +105,7 @@ void excluirCliente() {
         }
     }
 
-    fclose(arquivo);
+    fclose(arquivocli);
     fclose(temp);
 
     remove("clientes.txt");
@@ -117,7 +117,7 @@ void excluirCliente() {
         printf("\nCPF não encontrado!\n");
 }
 
-void menuOpcoes(FILE *arquivo) {
+void menuOpcoes(FILE *arquivocli,int opcAnt) {
     int opc = 0;
 
     do {
@@ -132,17 +132,22 @@ void menuOpcoes(FILE *arquivo) {
 
         switch (opc) {
             case 1:
-                arquivo = fopen("clientes.txt", "a");
-                if (arquivo == NULL) {
+            if (opcAnt = 1)
+            {
+                /* code */
+            }
+            
+                arquivocli = fopen("clientes.txt", "a");
+                if (arquivocli == NULL) {
                     printf("Erro ao abrir arquivo.\n");
                 } else {
-                    cadastroCli(arquivo);
-                    fclose(arquivo);
+                    cadastroCli(arquivocli);
+                    fclose(arquivocli);
                 }
                 break;
 
             case 2:
-                mostrarCliente(arquivo);
+                mostrarCliente(arquivocli);
                 break;
 
             case 3:
@@ -164,44 +169,36 @@ void menuOpcoes(FILE *arquivo) {
     } while (opc != 0);
 }
 
-void menu() {
+void menu(FILE *arquivocli, FILE *arquivo) {
     int opc = 0;
 
     do {
         printf("\n=== Escolha uma opção ===\n");
-        printf("\n1 - Cadast");
-        printf("\n2 - Consultar");
-        printf("\n3 - Alterar");
-        printf("\n4 - Excluir");
-        printf("\n0 - Voltar");
+        printf("\n1 - Cliente");
+        printf("\n2 - Produtos");
+        printf("\n3 - Fornecedores");
+        printf("\n4 - Vendas");
+        printf("\n0 - Sair");
         printf("\nEscolha uma opção: ");
         scanf("%d", &opc);
 
         switch (opc) {
             case 1:
-                arquivo = fopen("clientes.txt", "a");
-                if (arquivo == NULL) {
-                    printf("Erro ao abrir arquivo.\n");
-                } else {
-                    cadastroCli(arquivo);
-                    fclose(arquivo);
-                }
-                break;
-
+                menuOpcoes(arquivocli, opc);
             case 2:
-                mostrarCliente(arquivo);
+                menuOpcoes(arquivo, opc);
                 break;
 
             case 3:
-                atualizarCliente();
+                menuOpcoes(arquivo, opc);
                 break;
 
             case 4:
-                excluirCliente();
+                menuOpcoes(arquivo, opc);
                 break;
 
             case 0:
-                
+                printf("\nSaindo do sistema...");
                 break;
 
             default:
@@ -214,6 +211,17 @@ void menu() {
 int main() {
     setlocale(LC_ALL, "Portuguese");
 
+    FILE *arquivocli;
+    arquivocli = fopen("clientes.txt", "w");
+    if (arquivocli == NULL) {
+        printf("Erro ao abrir arquivo.\n");
+        return 1;
+    } else {
+        printf("Arquivo criado com sucesso!\n");
+    }
+
+    fclose(arquivocli);
+    
     FILE *arquivo;
     arquivo = fopen("clientes.txt", "w");
     if (arquivo == NULL) {
@@ -224,7 +232,9 @@ int main() {
     }
 
     fclose(arquivo);
-    menu(arquivo);
+
+    
+    menu(arquivocli, arquivo);
 
     return 0;
 }
