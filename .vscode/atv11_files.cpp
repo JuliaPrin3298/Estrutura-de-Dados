@@ -117,7 +117,27 @@ void excluirCliente() {
         printf("\nCPF não encontrado!\n");
 }
 
-void menuOpcoes(FILE *arquivocli,int opcAnt) {
+void formsCadastroPro(int codigo[], int codigoF[], char nome[], float preco_unitario[]) {
+    printf("=== Cadastrando Dados ===\n");
+    printf("\nDigite o codigo do produto: ");
+    scanf("%d", codigo);
+    printf("\nDigite o codigo do fornecedor: ");
+    scanf("%d", codigoF);
+    printf("Digite seu nome: ");
+    scanf("%49s", nome);
+    printf("Digite seu preço unitário: ");
+    scanf("%2.f", preco_unitario);
+}
+
+void cadastroCli(FILE *arquivopro) {
+    int codigo[5], int codigoF[5];char nome[50];float telefone[15];
+    formsCadastroCli(cpf, nome, telefone);
+
+    fprintf(arquivocli, "CPF: %s\nNome: %s\nTelefone: %s\n\n", cpf, nome, telefone);
+    printf("\nDados cadastrados com sucesso!\n");
+}
+
+void menuOpcoes(FILE *arquivocli, FILE *arquivopro, FILE *arquivofor, FILE *arquivoven,int opcAnt) {
     int opc = 0;
 
     do {
@@ -132,11 +152,8 @@ void menuOpcoes(FILE *arquivocli,int opcAnt) {
 
         switch (opc) {
             case 1:
-            if (opcAnt = 1)
+            if (opcAnt == 1)
             {
-                /* code */
-            }
-            
                 arquivocli = fopen("clientes.txt", "a");
                 if (arquivocli == NULL) {
                     printf("Erro ao abrir arquivo.\n");
@@ -144,22 +161,63 @@ void menuOpcoes(FILE *arquivocli,int opcAnt) {
                     cadastroCli(arquivocli);
                     fclose(arquivocli);
                 }
+            } else if(opcAnt == 2){
+                arquivopro = fopen("produtos.txt", "a");
+                if (arquivopro == NULL) {
+                    printf("Erro ao abrir arquivo.\n");
+                } else {
+                    cadastroPro(arquivopro);
+                    fclose(arquivopro);
+                }
+            } else if(opcAnt == 3){
+                arquivofor = fopen("fornecedores.txt", "a");
+                if (arquivofor == NULL) {
+                    printf("Erro ao abrir arquivo.\n");
+                } else {
+                    cadastroFor(arquivofor);
+                    fclose(arquivofor);
+                }
+            } else if(opcAnt == 4){
+                arquivoven = fopen("vendas.txt", "a");
+                if (arquivoven == NULL) {
+                    printf("Erro ao abrir arquivo.\n");
+                } else {
+                    cadastroVen(arquivoven);
+                    fclose(arquivoven);
+                }
+            }
+            
                 break;
 
             case 2:
-                mostrarCliente(arquivocli);
+            if (opcAnt == 1)
+            {
+                 mostrarCliente(arquivocli);
+            }
+            
+               
                 break;
 
             case 3:
+            if (opcAnt == 1)
+            {
                 atualizarCliente();
+            }
+            
+                
                 break;
 
             case 4:
+            if (opcAnt == 1)
+            {
+                /* code */
+            }
+            
                 excluirCliente();
                 break;
 
             case 0:
-                
+                menu(arquivocli, arquivopro, arquivofor, arquivoven);
                 break;
 
             default:
@@ -169,7 +227,7 @@ void menuOpcoes(FILE *arquivocli,int opcAnt) {
     } while (opc != 0);
 }
 
-void menu(FILE *arquivocli, FILE *arquivo) {
+void menu(FILE *arquivocli, FILE *arquivopro, FILE *arquivofor, FILE *arquivoven) {
     int opc = 0;
 
     do {
@@ -184,17 +242,17 @@ void menu(FILE *arquivocli, FILE *arquivo) {
 
         switch (opc) {
             case 1:
-                menuOpcoes(arquivocli, opc);
+                menuOpcoes(arquivocli, arquivopro, arquivofor, arquivoven, opc);
             case 2:
-                menuOpcoes(arquivo, opc);
+                menuOpcoes(arquivocli, arquivopro, arquivofor, arquivoven, opc);
                 break;
 
             case 3:
-                menuOpcoes(arquivo, opc);
+                menuOpcoes(arquivocli, arquivopro, arquivofor, arquivoven, opc);
                 break;
 
             case 4:
-                menuOpcoes(arquivo, opc);
+                menuOpcoes(arquivocli, arquivopro, arquivofor, arquivoven, opc);
                 break;
 
             case 0:
@@ -222,19 +280,41 @@ int main() {
 
     fclose(arquivocli);
     
-    FILE *arquivo;
-    arquivo = fopen("clientes.txt", "w");
-    if (arquivo == NULL) {
+    FILE *arquivopro;
+    arquivopro = fopen("produtos.txt", "w");
+    if (arquivopro == NULL) {
         printf("Erro ao abrir arquivo.\n");
         return 1;
     } else {
         printf("Arquivo criado com sucesso!\n");
     }
 
-    fclose(arquivo);
+    fclose(arquivopro);
 
-    
-    menu(arquivocli, arquivo);
+    FILE *arquivofor;
+    arquivofor = fopen("fornecedores.txt", "w");
+    if (arquivofor == NULL) {
+        printf("Erro ao abrir arquivo.\n");
+        return 1;
+    } else {
+        printf("Arquivo criado com sucesso!\n");
+    }
+
+    fclose(arquivofor);
+
+    FILE *arquivoven;
+    arquivoven = fopen("vendas.txt", "w");
+    if (arquivoven == NULL) {
+        printf("Erro ao abrir arquivo.\n");
+        return 1;
+    } else {
+        printf("Arquivo criado com sucesso!\n");
+    }
+
+    fclose(arquivoven);
+
+
+    menu(arquivocli, arquivopro, arquivofor, arquivoven);
 
     return 0;
 }
