@@ -1,0 +1,5 @@
+Codigo: 09
+Codigo Fornecedor: 100
+Nome: Amaciante
+Preço: 10
+
