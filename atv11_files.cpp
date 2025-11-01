@@ -117,6 +117,10 @@ void excluirCliente() {
         printf("\nCPF não encontrado!\n");
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//produto
+
 void formsCadastroPro(int codigo[], int codigoF[], char nome[], float preco_unitario[]) {
     printf("=== Cadastrando Dados ===\n");
     printf("\nDigite o codigo do produto: ");
@@ -129,13 +133,171 @@ void formsCadastroPro(int codigo[], int codigoF[], char nome[], float preco_unit
     scanf("%2.f", preco_unitario);
 }
 
-void cadastroCli(FILE *arquivopro) {
-    int codigo[5], int codigoF[5];char nome[50];float telefone[15];
-    formsCadastroCli(cpf, nome, telefone);
+void cadastroPro(FILE *arquivopro) {
+    int codigo[5], codigoF[5];char nome[50];float preco_unitario[10];
+    formsCadastroPro(codigo, codigoF, nome, preco_unitario);
 
-    fprintf(arquivocli, "CPF: %s\nNome: %s\nTelefone: %s\n\n", cpf, nome, telefone);
+    fprintf(arquivopro, "Codigo: %d\nCodigo Fornecedor: %d\nNome: %s\nPreço: %2.f\n\n", codigo, codigoF, nome, preco_unitario);
     printf("\nDados cadastrados com sucesso!\n");
 }
+
+void mostrarProduto(FILE *arquivopro) {
+    char linha[100];
+    printf("\n=== Produtos Cadastrados ===\n");
+
+    fclose(arquivopro);
+    arquivopro = fopen("produtos.txt", "r");
+
+    if (arquivopro == NULL) {
+        printf("Erro ao abrir arquivo para leitura.\n");
+        return;
+    }
+
+    while (fgets(linha, 100, arquivopro)) {
+        printf("%s", linha);
+    }
+
+    fclose(arquivopro);
+    printf("\n============================\n");
+}
+
+
+void atualizarProduto() {
+    FILE *arquivopro, *temp;
+    int codigoBusca[15], codigo[15], codigoF[50];char nome[15];float preco_unitario[10];
+    int encontrado = 0;
+
+    arquivopro = fopen("produtos.txt", "r");
+    temp = fopen("temp.txt", "w");
+
+    if (arquivopro == NULL || temp == NULL) {
+        printf("Erro ao abrir os arquivos.\n");
+        return;
+    }
+
+    printf("\nDigite o codigo do produto que deseja atualizar: ");
+    scanf("%14s", codigoBusca);
+
+    while (fscanf(arquivopro, "Codigo: %d\nCodigo Fornecedor: %d\nNome: %s\nPreço: %2.f\n\n", codigo, codigoF, nome, preco_unitario) == 4) {
+        if (strcmp(codigo, codigoBusca) == 0) {
+            encontrado = 1;
+            printf("\nProduto encontrado!\n");
+            printf("Digite o novo nome: ");
+            scanf("%49s", nome);
+            printf("Digite o novo preço: ");
+            scanf("%f", preco_unitario);
+            printf("Digite o novo codigo de fornecedor: ");
+            scanf("%d", codigoF );
+        }
+        fprintf(temp, "Codigo: %d\nCodigo Fornecedor: %d\nNome: %s\nPreço: %2.f\n\n", codigo, codigoF, nome, preco_unitario);
+    }
+
+    fclose(arquivopro);
+    fclose(temp);
+
+    remove("produtos.txt");
+    rename("temp.txt", "produtos.txt");
+
+    if (encontrado)
+        printf("\nCliente atualizado com sucesso!\n");
+    else
+        printf("\nCPF não encontrado!\n");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Fornecedor
+
+void formsCadastroFor(int codigo[], int telefone[], char nome[], char email[]) {
+    printf("=== Cadastrando Dados ===\n");
+    printf("\nDigite o codigo do fornecedor: ");
+    scanf("%d", codigo);
+    printf("\nDigite o telefone: ");
+    scanf("%d", telefone);
+    printf("Digite seu nome: ");
+    scanf("%49s", nome);
+    printf("Digite seu email: ");
+    scanf("%49s", email);
+}
+
+void cadastroFor(FILE *arquivofor) {
+    int codigo[5], telefone[15];char nome[50], email[50];
+    formsCadastroFor(codigo, telefone, nome, email);
+
+    fprintf(arquivofor, "Codigo: %d\nTelefone: %d\nNome: %s\nEmail: %s\n\n", codigo, telefone, nome, email);
+    printf("\nDados cadastrados com sucesso!\n");
+}
+
+void mostrarFornecedor(FILE *arquivofor) {
+
+    char linha[100];
+    printf("\n=== Fornecedores Cadastrados ===\n");
+
+    fclose(arquivofor);
+    arquivofor = fopen("fornecedores.txt", "r");
+
+    if (arquivofor == NULL) {
+        printf("Erro ao abrir arquivo para leitura.\n");
+        return;
+    }
+
+    while (fgets(linha, 100, arquivofor)) {
+        printf("%s", linha);
+    }
+
+    fclose(arquivofor);
+    printf("\n============================\n");
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// venda
+
+void formsCadastroVen(int codigo[], int codigo_produto[], char data[], float total[]) {
+    printf("=== Cadastrando Dados ===\n");
+    printf("\nDigite o codigo da venda: ");
+    scanf("%d", codigo);
+    printf("\nDigite o codigo do produto: ");
+    scanf("%d", codigo_produto);
+    printf("Digite a data da venda: ");
+    scanf("%49s", data);
+    printf("Digite o total da sua compra: ");
+    scanf("%49s", total);
+}
+
+void cadastroVen(FILE *arquivoven) {
+    int codigo[5], codigo_produto[15];char data[12]; float total[10];
+    formsCadastroVen(codigo, codigo_produto, data, total);
+
+    fprintf(arquivoven, "Codigo: %d\nCodigo do produto: %d\nData: %s\nTotal: %.2f\n\n", codigo, codigo_produto, data, total);
+    printf("\nDados cadastrados com sucesso!\n");
+}
+
+void mostrarVendas(FILE *arquivoven) {
+    char linha[100];
+    printf("\n=== Vendas Cadastradas ===\n");
+
+    fclose(arquivoven);
+    arquivoven = fopen("vendas.txt", "r");
+
+    if (arquivoven == NULL) {
+        printf("Erro ao abrir arquivo para leitura.\n");
+        return;
+    }
+
+    while (fgets(linha, 100, arquivoven)) {
+        printf("%s", linha);
+    }
+
+    fclose(arquivoven);
+    printf("\n============================\n");
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//menus
 
 void menuOpcoes(FILE *arquivocli, FILE *arquivopro, FILE *arquivofor, FILE *arquivoven,int opcAnt) {
     int opc = 0;
